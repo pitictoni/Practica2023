@@ -3,16 +3,16 @@ package ro.dorobantiu.gradis.services.helper;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
 public class ExcelUtil {
-    public String test() {
-        String filePath = "";
+    public String test(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         int worksheetIndex = 0;
-        try (FileInputStream inputStream = new FileInputStream(filePath)) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(worksheetIndex);
             for (Row row : sheet) {
