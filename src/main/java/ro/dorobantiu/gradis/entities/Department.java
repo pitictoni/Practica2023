@@ -62,5 +62,29 @@ public class Department implements Serializable {
     public void setAuthors(Collection<Author> authors) {
         this.authors = authors;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Department))
+            return false;
+
+        return name.equals(((Department) obj).name);
+    }
+
+    @Override
+    public int hashCode(){
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", faculty=" + faculty +
+                ", authors=" + authors +
+                '}';
+    }
 }
 

@@ -50,4 +50,25 @@ public class Faculty implements Serializable {
     public void setDepartments(Collection<Department> departments) {
         this.departments = departments;
     }
+
+    @Override
+    public String toString() {
+        return "Faculty{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", departments=" + departments +
+                '}';
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Faculty))
+            return false;
+
+         return name.equals(((Faculty) obj).name);
+    }
+
+    @Override
+    public int hashCode(){
+        return name.hashCode();
+    }
 }

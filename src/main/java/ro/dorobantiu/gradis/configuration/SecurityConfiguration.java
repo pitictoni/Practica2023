@@ -25,7 +25,8 @@ public class SecurityConfiguration {
                         .invalidateHttpSession(true)
                         .deleteCookies()
                 );
-        httpSecurity.cors().and().csrf().ignoringRequestMatchers("/upload");
+        //httpSecurity.cors().and().csrf().ignoringRequestMatchers("/upload");
+        httpSecurity.cors().and().csrf().disable();
         httpSecurity.headers().frameOptions().sameOrigin();
         return httpSecurity.build();
     }

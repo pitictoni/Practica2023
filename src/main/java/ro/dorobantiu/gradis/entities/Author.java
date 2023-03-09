@@ -62,4 +62,14 @@ public class Author implements Serializable {
     public void setPapers(Collection<Paper> papers) {
         this.papers = papers;
     }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", department=" + department +
+                ", papers=" + papers +
+                '}';
+    }
 }
