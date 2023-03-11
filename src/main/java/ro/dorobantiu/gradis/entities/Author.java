@@ -17,6 +17,9 @@ public class Author implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String email;
+
     @ManyToOne
     private Department department;
 
@@ -31,6 +34,19 @@ public class Author implements Serializable {
         this.department = department;
     }
 
+    public Author(String name, String email, Department department) {
+        this.name = name;
+        this.email = email;
+        this.department = department;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
     public String getId() {
         return id;
     }

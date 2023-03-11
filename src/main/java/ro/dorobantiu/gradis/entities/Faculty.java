@@ -74,10 +74,4 @@ public class Faculty implements Serializable {
         return name.hashCode();
     }
 
-    public FacultyDTO toDTO(){
-        FacultyDTO facultyDTO = new FacultyDTO();
-        facultyDTO.setName(name);
-        facultyDTO.setId(id);
-        return facultyDTO;
-    }
 }

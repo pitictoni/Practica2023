@@ -18,12 +18,13 @@ public class User implements Serializable {
     @Column(length = 100)
     private String password;
 
+    @Column
     private boolean enabled;
 
     @OneToMany(mappedBy = "email")
     private Collection<Authority> authorities = new ArrayList<>();
 
-    protected User() {
+    public User() {
     }
 
     public User(String email, String password, boolean enabled) {

@@ -121,6 +121,10 @@ public class ExcelUtil {
     private int columnNumberFromName(String columnName) {
         // TODO use COLUMNS map
         switch (columnName){
+            case "mail": return 0;
+            case "nume": return 1;
+            case "prenume": return 2;
+            case "Functie": return 5;
             case "DenumireFacultate": return 6;
             case "DenumireDepartament": return 7;
 
