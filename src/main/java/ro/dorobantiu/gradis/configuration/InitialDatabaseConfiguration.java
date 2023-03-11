@@ -2,15 +2,13 @@ package ro.dorobantiu.gradis.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ro.dorobantiu.gradis.entities.*;
+import ro.dorobantiu.gradis.repositories.*;
 import ro.dorobantiu.gradis.repositories.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import ro.dorobantiu.gradis.helpers.ExcelUtil;
-
-import java.io.FileInputStream;
 
 
 @Configuration
@@ -48,7 +46,7 @@ public class InitialDatabaseConfiguration {
 //            log.info("Add department " + departmentRepository.save(department));
 //            log.info("Add author " + authorRepository.save(author1));
 //            log.info("Add author " + authorRepository.save(author2));
-            //log.info("Excel " + excelUtil.getFaculties(new FileInputStream("documents/cadre didactice.xlsx")).toString());
+//            log.info("Faculties " + excelUtil.getFaculties(new FileInputStream("documents/cadre didactice.xlsx")).toString());
         };
     }
 }

@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ro.dorobantiu.gradis.entities.Department;
-import ro.dorobantiu.gradis.entities.Faculty;
-import ro.dorobantiu.gradis.helpers.ExcelUtil;
+import ro.dorobantiu.gradis.DTOs.DepartmentDTO;
+import ro.dorobantiu.gradis.DTOs.FacultyDTO;
 import ro.dorobantiu.gradis.services.DepartmentServices;
 import ro.dorobantiu.gradis.services.FacultyServices;
 
@@ -32,12 +31,12 @@ public class ImportController {
     }
 
     @PostMapping(value = "/importFaculties", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<Faculty> importFaculties(@RequestPart MultipartFile file) throws IOException {
+    public List<FacultyDTO> importFaculties(@RequestPart MultipartFile file) throws IOException {
         return facultyServices.importFaculties(file.getInputStream());
     }
 
     @PostMapping(value = "/importDepartments", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<Department> importDepartments(@RequestPart MultipartFile file) throws IOException {
+    public List<DepartmentDTO> importDepartments(@RequestPart MultipartFile file) throws IOException {
         return departmentServices.importDepartments(file.getInputStream());
     }
 

@@ -1,6 +1,7 @@
 package ro.dorobantiu.gradis.entities;
 
 import jakarta.persistence.*;
+import ro.dorobantiu.gradis.DTOs.FacultyDTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Faculty implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+//    @OneToMany(mappedBy = "faculty",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     @OneToMany(mappedBy = "faculty")
     private Collection<Department> departments = new ArrayList<>();
 
@@ -70,5 +72,12 @@ public class Faculty implements Serializable {
     @Override
     public int hashCode(){
         return name.hashCode();
+    }
+
+    public FacultyDTO toDTO(){
+        FacultyDTO facultyDTO = new FacultyDTO();
+        facultyDTO.setName(name);
+        facultyDTO.setId(id);
+        return facultyDTO;
     }
 }

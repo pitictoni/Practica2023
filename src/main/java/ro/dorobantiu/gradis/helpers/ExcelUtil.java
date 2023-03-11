@@ -19,22 +19,21 @@ import java.util.*;
 @Service
 public class ExcelUtil {
 
-    public static final String SHEET = "Foaie1";
+    public static String SHEET = "Foaie1";
     //    @Autowired
 //    FacultyServices facultyServices;
 //    @Autowired
 //    DepartmentServices departmentServices;
     public static String EXCELTYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERs = { "mail", "nume", "prenume", "stare", "Categorie", "Functie", "DenumireFacultate", "DenumireDepartament" };
+    public static Map<String, Integer>  HEADER = new HashMap<>();
 
-
-    static private Map<String, Integer> COLUMNS = new HashMap<>();
     public ExcelUtil() {
         setMetaInformation();
     }
 
     private void setMetaInformation() {
-        // TODO get header in a COLUMNS map
+        // set HEADER
+
     }
 
 
@@ -129,11 +128,6 @@ public class ExcelUtil {
         }
     }
 
-
-
-    public String saveToTempExcel(MultipartFile file) {
-        return "";
-    }
 
 
 }

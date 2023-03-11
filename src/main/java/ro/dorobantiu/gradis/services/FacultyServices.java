@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ro.dorobantiu.gradis.DTOs.FacultyDTO;
 import ro.dorobantiu.gradis.entities.Faculty;
 import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.repositories.FacultyRepository;
@@ -16,6 +17,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class FacultyServices {
 
@@ -24,19 +27,14 @@ public class FacultyServices {
     @Autowired
     ExcelUtil excelUtil;
 
-//    public FacultyServices(FacultyRepository facultyRepository) {
-//        this.facultyRepository = facultyRepository;
-//    }
-//
-    public Faculty getByName(String facultyName) {
-        return facultyRepository.findByName(facultyName);
-    }
+    @Autowired
+    Mapper mapper;
 
 
-    public List<Faculty>  importFaculties(InputStream excelStream){
+    public List<FacultyDTO>  importFaculties(InputStream excelStream){
         List <Faculty> faculties = getFaculties(excelStream);
         facultyRepository.saveAll(faculties);
-        return faculties;
+        return faculties.stream().map(x -> mapper.toDTO(x)).collect(toList());
     }
 
     public List<Faculty> getFaculties(InputStream excelStream){ // TODO add unique param??

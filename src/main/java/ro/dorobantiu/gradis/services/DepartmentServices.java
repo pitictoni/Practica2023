@@ -8,9 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.dorobantiu.gradis.configuration.InitialDatabaseConfiguration;
+import ro.dorobantiu.gradis.DTOs.DepartmentDTO;
 import ro.dorobantiu.gradis.entities.Department;
-import ro.dorobantiu.gradis.entities.Faculty;
 import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.repositories.DepartmentRepository;
 import ro.dorobantiu.gradis.repositories.FacultyRepository;
@@ -21,6 +20,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class DepartmentServices {
 
@@ -29,15 +30,17 @@ public class DepartmentServices {
     @Autowired
     DepartmentRepository departmentRepository;
     @Autowired
-    FacultyServices facultyServices;
+    FacultyRepository facultyRepository;
     @Autowired
     ExcelUtil excelUtil;
 
-    public List<Department> importDepartments(InputStream excelStream) {
-        // facultyServices.importFaculties(excelStream); // TODO check if already imported?
+    @Autowired
+    Mapper mapper;
+
+    public List<DepartmentDTO> importDepartments(InputStream excelStream){
         List <Department> departments = getDepartments(excelStream);
-       // departmentRepository.saveAll(departments);
-        return departments;
+        departmentRepository.saveAll(departments);
+        return departments.stream().map(x -> mapper.toDTO(x)).collect(toList());
     }
 
     public List<Department> getDepartments(InputStream excelStream) {
@@ -57,11 +60,10 @@ public class DepartmentServices {
                 String departmentName = excelUtil.getCellData(currentRow,"DenumireDepartament");
                 department.setName(departmentName);
                 String facultyName =  excelUtil.getCellData(currentRow,"DenumireFacultate");
-                department.setFaculty(facultyServices.getByName(facultyName));
+                department.setFaculty(facultyRepository.findByName(facultyName));
                 departments.add(department);
             }
-            log.info(departments.toString());
-            return departments.stream().toList();
+            return  departments.stream().toList();
         }
         catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
