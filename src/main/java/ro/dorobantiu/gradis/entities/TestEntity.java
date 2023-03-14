@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class TestEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false, unique = true, length = 36)
     private String id;
 

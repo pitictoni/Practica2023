@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @IdClass(AuthorityId.class)
-@Table(name="GRADIS_AUTHORITIES")
+@Table(name = "GRADIS_AUTHORITIES")
 public class Authority implements Serializable {
 
     @Id

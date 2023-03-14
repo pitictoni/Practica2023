@@ -11,13 +11,10 @@ import ro.dorobantiu.gradis.entities.Faculty;
 import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.repositories.FacultyRepository;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class FacultyServices {
@@ -30,37 +27,32 @@ public class FacultyServices {
     @Autowired
     Mapper mapper;
 
-
-    public List<FacultyDTO>  importFaculties(InputStream excelStream){
-        List <Faculty> faculties = getFaculties(excelStream);
+    public Collection<FacultyDTO> importFaculties(InputStream excelStream) {
+        Collection<Faculty> faculties = getFaculties(excelStream);
         facultyRepository.saveAll(faculties);
-        return faculties.stream().map(x -> mapper.toDTO(x)).collect(toList());
+        return faculties.stream().map(x -> mapper.toDTO(x)).toList();
     }
 
-    public List<Faculty> getFaculties(InputStream excelStream){ // TODO add unique param??
-        try{
+    public Collection<Faculty> getFaculties(InputStream excelStream) { // TODO add unique param??
+        try {
             Workbook workbook = new XSSFWorkbook(excelStream);
             Sheet sheet = workbook.getSheet(excelUtil.SHEET);
             Iterator<Row> rows = sheet.iterator();
 
-            HashSet <Faculty> faculties = new HashSet<>();
+            HashSet<Faculty> faculties = new HashSet<>();
 
-            Row currentRow = rows.next(); // skip header
-
-            while ( rows.hasNext() ) {
-                currentRow = rows.next();
+            rows.next(); // skip header
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+                String facultyName = excelUtil.getCellData(currentRow, "DenumireFacultate");
 
                 Faculty faculty = new Faculty();
-                String facultyName = excelUtil.getCellData(currentRow,"DenumireFacultate");
                 faculty.setName(facultyName);
                 faculties.add(faculty);
             }
-            return faculties.stream().toList();
-        }
-        catch (IOException e) {
-            throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+            return faculties;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
         }
     }
 

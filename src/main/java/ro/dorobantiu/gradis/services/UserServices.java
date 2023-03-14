@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -34,13 +33,13 @@ public class UserServices {
     Mapper mapper;
 
     public List<UserDTO> importUsers(InputStream excelStream) {
-        List <User> users = getUsers(excelStream);
+        List<User> users = getUsers(excelStream);
         userRepository.saveAll(users);
         return users.stream().map(x -> mapper.toDTO(x)).collect(toList());
     }
 
     private List<User> getUsers(InputStream excelStream) {
-        try{
+        try {
             Workbook workbook = new XSSFWorkbook(excelStream);
             Sheet sheet = workbook.getSheet(excelUtil.SHEET);
             Iterator<Row> rows = sheet.iterator();
@@ -49,14 +48,13 @@ public class UserServices {
 
             Row currentRow = rows.next(); // skip header
 
-            while ( rows.hasNext() ) {
+            while (rows.hasNext()) {
                 currentRow = rows.next();
-                String userEmail = excelUtil.getCellData(currentRow,"mail");
-                users.add(new User(userEmail,"123",true));
+                String userEmail = excelUtil.getCellData(currentRow, "mail");
+                users.add(new User(userEmail, "123", true));
             }
             return users.stream().toList();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);

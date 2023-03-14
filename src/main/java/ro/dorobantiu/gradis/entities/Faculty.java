@@ -18,7 +18,7 @@ public class Faculty implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-//    @OneToMany(mappedBy = "faculty",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
+    //    @OneToMany(mappedBy = "faculty",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     @OneToMany(mappedBy = "faculty")
     private Collection<Department> departments = new ArrayList<>();
 
@@ -61,16 +61,17 @@ public class Faculty implements Serializable {
                 ", departments=" + departments +
                 '}';
     }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Faculty))
             return false;
 
-         return name.equals(((Faculty) obj).name);
+        return name.equals(((Faculty) obj).name);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return name.hashCode();
     }
 

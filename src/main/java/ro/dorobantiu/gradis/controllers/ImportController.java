@@ -1,4 +1,5 @@
 package ro.dorobantiu.gradis.controllers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import ro.dorobantiu.gradis.services.FacultyServices;
 import ro.dorobantiu.gradis.services.UserServices;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -34,14 +36,16 @@ public class ImportController {
 
     @PostMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public List<UserDTO> importUsers(@RequestPart MultipartFile file) throws IOException {
-       return userServices.importUsers(file.getInputStream());
+        return userServices.importUsers(file.getInputStream());
     }
+
     @PostMapping(value = "/authors", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public List<AuthorDTO> importAuthors(@RequestPart MultipartFile file) throws IOException {
         return authorServices.importAuthors(file.getInputStream());
     }
+
     @PostMapping(value = "/faculties", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<FacultyDTO> importFaculties(@RequestPart MultipartFile file) throws IOException {
+    public Collection<FacultyDTO> importFaculties(@RequestPart MultipartFile file) throws IOException {
         return facultyServices.importFaculties(file.getInputStream());
     }
 
@@ -52,15 +56,10 @@ public class ImportController {
 
     @PostMapping(value = "/all", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String importAll(@RequestPart MultipartFile file) throws IOException {
-        try {
-            facultyServices.importFaculties(file.getInputStream());
-            departmentServices.importDepartments(file.getInputStream());
-            userServices.importUsers(file.getInputStream());
-            authorServices.importAuthors(file.getInputStream());
-        }
-        catch (Exception E){
-            return E.getMessage();
-        }
+        facultyServices.importFaculties(file.getInputStream());
+        departmentServices.importDepartments(file.getInputStream());
+        userServices.importUsers(file.getInputStream());
+        authorServices.importAuthors(file.getInputStream());
         return "Faculties and Departments imported";
     }
 

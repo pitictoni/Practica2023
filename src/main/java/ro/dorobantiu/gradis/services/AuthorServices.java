@@ -15,11 +15,8 @@ import ro.dorobantiu.gradis.repositories.AuthorRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-import static java.util.stream.Collectors.toList;
 @Service
 public class AuthorServices {
     private static final Logger log = LoggerFactory.getLogger(AuthorServices.class);
@@ -34,36 +31,38 @@ public class AuthorServices {
     Mapper mapper;
 
     public List<AuthorDTO> importAuthors(InputStream excelStream) {
-        List <Author> authors = getAuthors(excelStream);
+        Collection<Author> authors = getAuthors(excelStream);
         authorRepository.saveAll(authors);
-        return authors.stream().map(x -> mapper.toDTO(x)).collect(toList());
-
+        return authors.stream().map(x -> mapper.toDTO(x)).toList();
     }
 
-    private List <Author>  getAuthors(InputStream excelStream) {
-        try{
+    private Collection<Author> getAuthors(InputStream excelStream) {
+        try {
             Workbook workbook = new XSSFWorkbook(excelStream);
-            Sheet sheet = workbook.getSheet(excelUtil.SHEET);
+            Sheet sheet = workbook.getSheet(ExcelUtil.SHEET);
             Iterator<Row> rows = sheet.iterator();
 
             HashSet<Author> authors = new HashSet<>();
-
             Row currentRow = rows.next(); // skip header
-
-            while ( rows.hasNext() ) {
+            while (rows.hasNext()) {
                 currentRow = rows.next();
-                String authorEmail = excelUtil.getCellData(currentRow,"mail");
-                String authorName =  excelUtil.getCellData(currentRow,"nume")+" " + excelUtil.getCellData(currentRow,"prenume");
-                String departmentName = excelUtil.getCellData(currentRow,"DenumireDepartament");
-                authors.add(new Author(authorName,authorEmail,departmentServices.getDepartmentByName(departmentName)));
+                String authorEmail = excelUtil.getCellData(currentRow, "mail");
+                String authorName = excelUtil.getCellData(currentRow, "nume") + " " +
+                        excelUtil.getCellData(currentRow, "prenume");
+                String departmentName = excelUtil.getCellData(currentRow, "DenumireDepartament");
+                authors.add(new Author(authorName, authorEmail, departmentServices.getDepartmentByName(departmentName)));
             }
-            return authors.stream().toList();
-        }
-        catch (IOException e) {
+            return authors;
+        } catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    public Collection<AuthorDTO> getAllAuthors() {
+        List<AuthorDTO> authorsList = new ArrayList<>();
+        authorRepository.findAll().forEach(a -> authorsList.add(mapper.toDTO(a)));
+        return authorsList;
+    }
 }

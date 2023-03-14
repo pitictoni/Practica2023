@@ -2,6 +2,8 @@ package ro.dorobantiu.gradis.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ro.dorobantiu.gradis.entities.Authority;
+import ro.dorobantiu.gradis.entities.User;
 import ro.dorobantiu.gradis.repositories.*;
 import ro.dorobantiu.gradis.repositories.*;
 import org.slf4j.Logger;
@@ -40,8 +42,8 @@ public class InitialDatabaseConfiguration {
 //            department.getAuthors().add(author2);
 //            log.info("Add test entity " + repository.save(new TestEntity("test", "test descr")));
 //            log.info("Add test entity " + repository.save(new TestEntity("test1", "descr")));
-//            log.info("Add user " + userRepository.save(new User("admin", passwordEncoder.encode("a"), true)));
-//            log.info("Add user " + authoritiesRepository.save(new Authority("admin", "ROLE_READ_PRINCIPAL")));
+            log.info("Add user " + userRepository.save(new User("admin", passwordEncoder.encode("a"), true)));
+            log.info("Add user " + authoritiesRepository.save(new Authority("admin", "ROLE_READ_PRINCIPAL")));
 //            log.info("Add faculty " + facultyRepository.save(faculty));
 //            log.info("Add department " + departmentRepository.save(department));
 //            log.info("Add author " + authorRepository.save(author1));

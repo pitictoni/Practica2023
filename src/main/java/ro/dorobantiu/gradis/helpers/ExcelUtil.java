@@ -1,20 +1,13 @@
 package ro.dorobantiu.gradis.helpers;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ro.dorobantiu.gradis.entities.Author;
-import ro.dorobantiu.gradis.entities.Department;
-import ro.dorobantiu.gradis.entities.Faculty;
-import ro.dorobantiu.gradis.services.DepartmentServices;
-import ro.dorobantiu.gradis.services.FacultyServices;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ExcelUtil {
@@ -25,7 +18,7 @@ public class ExcelUtil {
 //    @Autowired
 //    DepartmentServices departmentServices;
     public static String EXCELTYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    public static Map<String, Integer>  HEADER = new HashMap<>();
+    public static Map<String, Integer> HEADER = new HashMap<>();
 
     public ExcelUtil() {
         setMetaInformation();
@@ -38,12 +31,7 @@ public class ExcelUtil {
 
 
     public static boolean hasExcelFormat(MultipartFile file) {
-
-        if (!EXCELTYPE.equals(file.getContentType())) {
-            return false;
-        }
-
-        return true;
+        return EXCELTYPE.equals(file.getContentType());
     }
 
     public String test() {
@@ -87,51 +75,40 @@ public class ExcelUtil {
 //        }
 //    }
 
-    public String getCellData(Row row, String columnName) throws Exception{
-        try{
+    public String getCellData(Row row, String columnName) {
+        try {
             Cell cell = row.getCell(columnNumberFromName(columnName));
             String CellData = null;
-            switch (cell.getCellType()){
-                case STRING:
-                    CellData = cell.getStringCellValue();
-                    break;
-                case NUMERIC:
-                    if (DateUtil.isCellDateFormatted(cell))
-                    {
+            switch (cell.getCellType()) {
+                case STRING -> CellData = cell.getStringCellValue();
+                case NUMERIC -> {
+                    if (DateUtil.isCellDateFormatted(cell)) {
                         CellData = String.valueOf(cell.getDateCellValue());
+                    } else {
+                        CellData = String.valueOf((long) cell.getNumericCellValue());
                     }
-                    else
-                    {
-                        CellData = String.valueOf((long)cell.getNumericCellValue());
-                    }
-                    break;
-                case BOOLEAN:
-                    CellData = Boolean.toString(cell.getBooleanCellValue());
-                    break;
-                case BLANK:
-                    CellData = "";
-                    break;
+                }
+                case BOOLEAN -> CellData = Boolean.toString(cell.getBooleanCellValue());
+                case BLANK -> CellData = "";
             }
             return CellData;
-        }catch (Exception e){
-            return"";
+        } catch (Exception e) {
+            return "";
         }
     }
 
     private int columnNumberFromName(String columnName) {
         // TODO use COLUMNS map
-        switch (columnName){
-            case "mail": return 0;
-            case "nume": return 1;
-            case "prenume": return 2;
-            case "Functie": return 5;
-            case "DenumireFacultate": return 6;
-            case "DenumireDepartament": return 7;
-
-            default: return 0;
-        }
+        return switch (columnName) {
+            case "mail" -> 0;
+            case "nume" -> 1;
+            case "prenume" -> 2;
+            case "Functie" -> 5;
+            case "DenumireFacultate" -> 6;
+            case "DenumireDepartament" -> 7;
+            default -> 0;
+        };
     }
-
 
 
 }

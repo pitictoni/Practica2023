@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "DEPARTMENTS")
@@ -20,7 +21,7 @@ public class Department implements Serializable {
     @ManyToOne
     private Faculty faculty;
 
- //   @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
+    //   @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     @OneToMany(mappedBy = "department")
     private Collection<Author> authors = new ArrayList<>();
 
@@ -64,18 +65,17 @@ public class Department implements Serializable {
         this.authors = authors;
     }
 
-
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Department))
-            return false;
-
-        return name.equals(((Department) obj).name);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return name.equals(that.name);
     }
 
     @Override
-    public int hashCode(){
-        return name.hashCode();
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override

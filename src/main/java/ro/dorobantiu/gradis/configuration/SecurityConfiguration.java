@@ -12,10 +12,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests()
-//                .requestMatchers("/hello").permitAll()
-//                .requestMatchers("/principal").hasRole("READ_PRINCIPAL")
-//                .anyRequest().authenticated().and().formLogin();
-        .anyRequest().permitAll();
+                .requestMatchers("/hello").permitAll()
+                .requestMatchers("/principal").hasRole("READ_PRINCIPAL")
+                .anyRequest().authenticated().and().formLogin();
+//        .anyRequest().permitAll();
 
         httpSecurity
                 .logout(logout -> logout
