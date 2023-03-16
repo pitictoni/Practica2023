@@ -35,12 +35,12 @@ public class ImportController {
     AuthorServices authorServices;
 
     @PostMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<UserDTO> importUsers(@RequestPart MultipartFile file) throws IOException {
+    public Collection<UserDTO> importUsers(@RequestPart MultipartFile file) throws IOException {
         return userServices.importUsers(file.getInputStream());
     }
 
     @PostMapping(value = "/authors", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<AuthorDTO> importAuthors(@RequestPart MultipartFile file) throws IOException {
+    public Collection<AuthorDTO> importAuthors(@RequestPart MultipartFile file) throws IOException {
         return authorServices.importAuthors(file.getInputStream());
     }
 
@@ -50,7 +50,7 @@ public class ImportController {
     }
 
     @PostMapping(value = "/departments", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<DepartmentDTO> importDepartments(@RequestPart MultipartFile file) throws IOException {
+    public Collection<DepartmentDTO> importDepartments(@RequestPart MultipartFile file) throws IOException {
         return departmentServices.importDepartments(file.getInputStream());
     }
 
@@ -60,7 +60,7 @@ public class ImportController {
         departmentServices.importDepartments(file.getInputStream());
         userServices.importUsers(file.getInputStream());
         authorServices.importAuthors(file.getInputStream());
-        return "Faculties and Departments imported";
+        return "Faculties, Departments, Users, Authors  imported";
     }
 
 }

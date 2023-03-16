@@ -15,6 +15,7 @@ import ro.dorobantiu.gradis.repositories.UserRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,13 +33,13 @@ public class UserServices {
     @Autowired
     Mapper mapper;
 
-    public List<UserDTO> importUsers(InputStream excelStream) {
-        List<User> users = getUsers(excelStream);
+    public Collection<UserDTO> importUsers(InputStream excelStream) {
+        Collection<User> users = getUsers(excelStream);
         userRepository.saveAll(users);
-        return users.stream().map(x -> mapper.toDTO(x)).collect(toList());
+        return users.stream().map(x -> mapper.toDTO(x)).toList();
     }
 
-    private List<User> getUsers(InputStream excelStream) {
+    private Collection<User> getUsers(InputStream excelStream) {
         try {
             Workbook workbook = new XSSFWorkbook(excelStream);
             Sheet sheet = workbook.getSheet(excelUtil.SHEET);
@@ -53,7 +54,7 @@ public class UserServices {
                 String userEmail = excelUtil.getCellData(currentRow, "mail");
                 users.add(new User(userEmail, "123", true));
             }
-            return users.stream().toList();
+            return users;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
         } catch (Exception e) {

@@ -13,6 +13,7 @@ import ro.dorobantiu.gradis.repositories.DepartmentRepository;
 import ro.dorobantiu.gradis.repositories.FacultyRepository;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,13 +33,13 @@ public class DepartmentServices {
     @Autowired
     Mapper mapper;
 
-    public List<DepartmentDTO> importDepartments(InputStream excelStream) {
-        List<Department> departments = getDepartments(excelStream);
+    public Collection<DepartmentDTO> importDepartments(InputStream excelStream) {
+        Collection<Department> departments = getDepartments(excelStream);
         departmentRepository.saveAll(departments);
-        return departments.stream().map(x -> mapper.toDTO(x)).collect(toList());
+        return departments.stream().map(x -> mapper.toDTO(x)).toList();
     }
 
-    public List<Department> getDepartments(InputStream excelStream) {
+    public Collection<Department> getDepartments(InputStream excelStream) {
         try {
             Workbook workbook = new XSSFWorkbook(excelStream);
             Sheet sheet = workbook.getSheet(ExcelUtil.SHEET);
@@ -58,7 +59,7 @@ public class DepartmentServices {
                 department.setFaculty(facultyRepository.findByName(facultyName));
                 departments.add(department);
             }
-            return departments.stream().toList();
+            return departments;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
