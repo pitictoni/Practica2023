@@ -1,20 +1,18 @@
 package ro.dorobantiu.gradis.services;
 
 import org.springframework.stereotype.Component;
-import ro.dorobantiu.gradis.DTOs.AuthorDTO;
-import ro.dorobantiu.gradis.DTOs.DepartmentDTO;
-import ro.dorobantiu.gradis.DTOs.FacultyDTO;
-import ro.dorobantiu.gradis.DTOs.UserDTO;
-import ro.dorobantiu.gradis.entities.Author;
-import ro.dorobantiu.gradis.entities.Department;
-import ro.dorobantiu.gradis.entities.Faculty;
-import ro.dorobantiu.gradis.entities.User;
+import ro.dorobantiu.gradis.DTOs.*;
+import ro.dorobantiu.gradis.entities.*;
 
 
 @Component
 public class Mapper {
     public FacultyDTO toDTO(Faculty faculty) {
         return new FacultyDTO(faculty.getId(), faculty.getName());
+    }
+    public JournalDTO toDTO(Journal journal) {
+        return new JournalDTO(journal.getId(), journal.getTitle(),journal.getImpactFactor(), journal.getIndexing(), journal.getWoSCathegory(), journal.getQuartil(),
+                journal.getISSN(), journal.geteISSN());
     }
 
     public DepartmentDTO toDTO(Department department) {

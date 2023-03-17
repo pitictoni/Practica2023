@@ -13,6 +13,8 @@ import java.util.Map;
 public class ExcelUtil {
 
     public static String SHEET = "Foaie1";
+    public static String JournalSHEET = "AIS.2021.cuartile.valori";
+
     //    @Autowired
 //    FacultyServices facultyServices;
 //    @Autowired
@@ -96,6 +98,28 @@ public class ExcelUtil {
             return "";
         }
     }
+    public String getCellData(Row row, int columnNumber) {
+        try {
+            Cell cell = row.getCell(columnNumber);
+            String CellData = null;
+            switch (cell.getCellType()) {
+                case STRING -> CellData = cell.getStringCellValue();
+                case NUMERIC -> {
+                    if (DateUtil.isCellDateFormatted(cell)) {
+                        CellData = String.valueOf(cell.getDateCellValue());
+                    } else {
+                        CellData = String.valueOf((float) cell.getNumericCellValue());
+                    }
+                }
+                case BOOLEAN -> CellData = Boolean.toString(cell.getBooleanCellValue());
+                case BLANK -> CellData = "";
+            }
+            return CellData;
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
 
     private int columnNumberFromName(String columnName) {
         // TODO use COLUMNS map
