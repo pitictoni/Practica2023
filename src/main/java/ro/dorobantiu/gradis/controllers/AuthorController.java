@@ -19,5 +19,10 @@ public class AuthorController {
     public Collection<AuthorDTO> getAuthors() {
         return authorServices.getAllAuthors();
     }
+
+    @GetMapping(value = "name")
+    public Collection<AuthorDTO> getAuthorsByName(@RequestParam(value = "name") String name){
+        return authorServices.getAuthorsByName(name);
+    }
 }
 

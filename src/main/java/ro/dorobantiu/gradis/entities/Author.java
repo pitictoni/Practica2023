@@ -26,7 +26,9 @@ public class Author implements Serializable {
     @ManyToMany
     private Collection<Paper> papers = new ArrayList<>();
 
-    public Author() {
+    public Author(String authorName, String email) {
+        this.name = authorName;
+        this.email = email;
     }
 
     public Author(String name, Department department) {
@@ -38,6 +40,14 @@ public class Author implements Serializable {
         this.name = name;
         this.email = email;
         this.department = department;
+    }
+
+    public Author(String authorName) {
+        this.name = authorName;
+    }
+
+    public Author() {
+
     }
 
     public String getEmail() {

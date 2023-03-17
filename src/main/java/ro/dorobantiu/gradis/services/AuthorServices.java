@@ -46,12 +46,13 @@ public class AuthorServices {
     private Collection <Author>  getAuthors(InputStream excelStream) {
         try{
             Workbook workbook = new XSSFWorkbook(excelStream);
-            Sheet sheet = workbook.getSheet(excelUtil.SHEET);
+            Sheet sheet = workbook.getSheet(ExcelUtil.SHEET);
             Iterator<Row> rows = sheet.iterator();
 
             HashSet<Author> authors = new HashSet<>();
 
-            Row currentRow = rows.next(); // skip header
+            rows.next(); // skip header
+            Row currentRow;
 
             while ( rows.hasNext() ) {
                 currentRow = rows.next();
@@ -71,5 +72,9 @@ public class AuthorServices {
 
     public Collection<AuthorDTO> getAllAuthors() {
         return StreamSupport.stream(authorRepository.findAll().spliterator(),false).map(x -> mapper.toDTO(x)).toList();
+    }
+
+    public Collection<AuthorDTO> getAuthorsByName(String name) {
+        return authorRepository.findByName(name).stream().map(x -> mapper.toDTO(x)).toList();
     }
 }

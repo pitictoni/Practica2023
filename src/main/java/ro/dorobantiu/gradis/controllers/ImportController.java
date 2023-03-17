@@ -6,18 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ro.dorobantiu.gradis.DTOs.AuthorDTO;
-import ro.dorobantiu.gradis.DTOs.DepartmentDTO;
-import ro.dorobantiu.gradis.DTOs.FacultyDTO;
-import ro.dorobantiu.gradis.DTOs.UserDTO;
-import ro.dorobantiu.gradis.services.AuthorServices;
-import ro.dorobantiu.gradis.services.DepartmentServices;
-import ro.dorobantiu.gradis.services.FacultyServices;
-import ro.dorobantiu.gradis.services.UserServices;
+import ro.dorobantiu.gradis.DTOs.*;
+import ro.dorobantiu.gradis.services.*;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 
 @RestController
@@ -34,11 +27,18 @@ public class ImportController {
     @Autowired
     AuthorServices authorServices;
 
+    @Autowired
+    PaperServices paperServices;
+
     @PostMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<UserDTO> importUsers(@RequestPart MultipartFile file) throws IOException {
         return userServices.importUsers(file.getInputStream());
     }
 
+    @PostMapping(value = "/paperByURL")
+    public PaperDTO articleByURL(@RequestParam String url){
+        return paperServices.importPaperFromURL(url);
+    }
     @PostMapping(value = "/authors", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<AuthorDTO> importAuthors(@RequestPart MultipartFile file) throws IOException {
         return authorServices.importAuthors(file.getInputStream());
