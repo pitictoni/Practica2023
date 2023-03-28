@@ -24,6 +24,10 @@ public class Paper implements Serializable {
     @ManyToOne
     private Journal journal;
 
+    @Column
+    private String rawAuthorList;
+    @Column
+    private String rawJournalTitle;
     @ManyToMany
     private Collection<Author> authors = new ArrayList<>();
 
@@ -31,6 +35,28 @@ public class Paper implements Serializable {
     private Collection<Proof> proofs = new ArrayList<>();
 
     public Paper() {
+    }
+
+    public Paper(String title, String rawAuthorList, String rawJournalTitle) {
+        this.title = title;
+        this.rawAuthorList = rawAuthorList;
+        this.rawJournalTitle = rawJournalTitle;
+    }
+
+    public String getRawJournalTitle() {
+        return rawJournalTitle;
+    }
+
+    public void setRawJournalTitle(String rawJournalTitle) {
+        this.rawJournalTitle = rawJournalTitle;
+    }
+
+    public String getRawAuthorList() {
+        return rawAuthorList;
+    }
+
+    public void setRawAuthorList(String rawAuthorList) {
+        this.rawAuthorList = rawAuthorList;
     }
 
     public String getId() {
@@ -84,11 +110,4 @@ public class Paper implements Serializable {
                 '}';
     }
 
-    public PaperDTO toPaperDTO() {
-        List<AuthorWithIdAndNameDTO> authorDTOs = new ArrayList<>();
-        for (Author a : authors) {
-            authorDTOs.add(new AuthorWithIdAndNameDTO(id, a.getName()));
-        }
-        return new PaperDTO(id, title, authorDTOs);
-    }
 }

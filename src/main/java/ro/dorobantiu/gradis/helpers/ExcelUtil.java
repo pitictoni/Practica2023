@@ -14,13 +14,14 @@ public class ExcelUtil {
 
     public static String SHEET = "Foaie1";
     public static String JournalSHEET = "AIS.2021.cuartile.valori";
-
+    public static String PaperSHEET = "I.1";
     //    @Autowired
 //    FacultyServices facultyServices;
 //    @Autowired
 //    DepartmentServices departmentServices;
     public static String EXCELTYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     public static Map<String, Integer> HEADER = new HashMap<>();
+
 
     public ExcelUtil() {
         setMetaInformation();

@@ -1,5 +1,6 @@
 package ro.dorobantiu.gradis.services;
 
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import ro.dorobantiu.gradis.DTOs.*;
 import ro.dorobantiu.gradis.entities.*;
@@ -10,13 +11,17 @@ public class Mapper {
     public FacultyDTO toDTO(Faculty faculty) {
         return new FacultyDTO(faculty.getId(), faculty.getName());
     }
-    public JournalDTO toDTO(Journal journal) {
-        return new JournalDTO(journal.getId(), journal.getTitle(),journal.getImpactFactor(), journal.getIndexing(), journal.getWoSCathegory(), journal.getQuartil(),
-                journal.getISSN(), journal.geteISSN());
+
+    public JournalIdAndTitleDTO toDTO(Journal journal) {
+        return new JournalIdAndTitleDTO(journal.getId(), journal.getTitle());
     }
 
     public DepartmentDTO toDTO(Department department) {
         return new DepartmentDTO(department.getId(), department.getName(), toDTO(department.getFaculty()));
+    }
+
+    public PaperDTO toDTO(Paper paper) {
+        return new PaperDTO(paper.getId(), paper.getTitle(), paper.getRawAuthorList());
     }
 
     public UserDTO toDTO(User user) {
@@ -25,5 +30,9 @@ public class Mapper {
 
     public AuthorDTO toDTO(Author author) {
         return new AuthorDTO(author.getId(), author.getName(), author.getEmail(), toDTO(author.getDepartment()));
+    }
+
+    public AuthorEmailDTO toEmailDTO(Author a) {
+        return new AuthorEmailDTO(a.getEmail());
     }
 }

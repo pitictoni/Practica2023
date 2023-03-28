@@ -35,14 +35,22 @@ public class ImportController {
     public Collection<UserDTO> importUsers(@RequestPart MultipartFile file) throws IOException {
         return userServices.importUsers(file.getInputStream());
     }
+
     @PostMapping(value = "/journals", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Collection<JournalDTO> importJournals(@RequestPart MultipartFile file) throws IOException {
+    public Collection<JournalIdAndTitleDTO> importJournals(@RequestPart MultipartFile file) throws IOException {
         return journalServices.importJournals(file.getInputStream());
     }
+
     @PostMapping(value = "/paperByURL")
-    public PaperDTO articleByURL(@RequestParam String url){
+    public PaperDTO articleByURL(@RequestParam String url) {
         return paperServices.importPaperFromURL(url);
     }
+
+    @PostMapping(value = "/papers", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Collection<PaperDTO> importPapers(@RequestPart MultipartFile file) throws IOException {
+        return paperServices.importPapers(file.getInputStream());
+    }
+
     @PostMapping(value = "/authors", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<AuthorDTO> importAuthors(@RequestPart MultipartFile file) throws IOException {
         return authorServices.importAuthors(file.getInputStream());

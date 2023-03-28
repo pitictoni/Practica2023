@@ -12,6 +12,7 @@ import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.repositories.FacultyRepository;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,4 +57,9 @@ public class FacultyServices {
         }
     }
 
+    public Collection<FacultyDTO> getAllFaculties() {
+        Collection<FacultyDTO> facultyDTOS = new ArrayList<>();
+        facultyRepository.findAll().forEach(x -> facultyDTOS.add(new FacultyDTO(x.getId(),x.getName())));
+        return facultyDTOS;
+    }
 }

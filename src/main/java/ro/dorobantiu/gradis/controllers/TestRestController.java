@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ro.dorobantiu.gradis.services.helper.ExcelUtil;
+import ro.dorobantiu.gradis.helpers.ExcelUtil;
 
 import java.io.IOException;
 
@@ -24,9 +24,5 @@ public class TestRestController {
         return String.format("Hello %s!", name);
     }
 
-    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String uploadExcelData(@RequestPart MultipartFile file) throws IOException {
-        log.info("" + file.getBytes().length);
-        return excelUtil.test(file.getBytes());
-    }
+
 }

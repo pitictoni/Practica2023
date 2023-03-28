@@ -9,16 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.dorobantiu.gradis.DTOs.AuthorDTO;
+import ro.dorobantiu.gradis.DTOs.AuthorEmailDTO;
 import ro.dorobantiu.gradis.entities.Author;
 import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.repositories.AuthorRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -76,5 +74,11 @@ public class AuthorServices {
 
     public Collection<AuthorDTO> getAuthorsByName(String name) {
         return authorRepository.findByName(name).stream().map(x -> mapper.toDTO(x)).toList();
+    }
+
+    public Collection<AuthorEmailDTO> getAuthorsMail() {
+        List<AuthorEmailDTO> authorsList = new ArrayList<>();
+        authorRepository.findAll().forEach(a -> authorsList.add(mapper.toEmailDTO(a)));
+        return authorsList;
     }
 }

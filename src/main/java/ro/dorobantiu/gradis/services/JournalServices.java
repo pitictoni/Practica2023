@@ -6,9 +6,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ro.dorobantiu.gradis.DTOs.JournalDTO;
-import ro.dorobantiu.gradis.entities.Author;
-import ro.dorobantiu.gradis.entities.Faculty;
+import ro.dorobantiu.gradis.DTOs.JournalIdAndTitleDTO;
 import ro.dorobantiu.gradis.entities.Journal;
 import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.repositories.JournalRepository;
@@ -26,7 +24,7 @@ public class JournalServices {
     @Autowired
     Mapper mapper;
 
-    public Collection<JournalDTO> importJournals(InputStream excelStream) {
+    public Collection<JournalIdAndTitleDTO> importJournals(InputStream excelStream) {
         Collection<Journal> journals = getJournals(excelStream);
         journalRepository.saveAll(journals);
         int numberOfReturnedJournals = 50;
