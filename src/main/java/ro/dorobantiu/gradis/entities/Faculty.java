@@ -6,6 +6,7 @@ import ro.dorobantiu.gradis.DTOs.FacultyDTO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "FACULTIES")
@@ -18,7 +19,6 @@ public class Faculty implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
-    //    @OneToMany(mappedBy = "faculty",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     @OneToMany(mappedBy = "faculty")
     private Collection<Department> departments = new ArrayList<>();
 
@@ -63,16 +63,15 @@ public class Faculty implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Faculty))
-            return false;
-
-        return name.equals(((Faculty) obj).name);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Faculty faculty = (Faculty) o;
+        return name.equals(faculty.name);
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name);
     }
-
 }

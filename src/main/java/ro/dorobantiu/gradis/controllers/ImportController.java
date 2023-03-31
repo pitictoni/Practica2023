@@ -3,10 +3,13 @@ package ro.dorobantiu.gradis.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import ro.dorobantiu.gradis.DTOs.*;
+import ro.dorobantiu.gradis.helpers.ExcelUtil;
 import ro.dorobantiu.gradis.services.*;
 
 import java.io.IOException;
@@ -18,6 +21,7 @@ import java.util.Collection;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ImportController {
     private static final Logger log = LoggerFactory.getLogger(TestRestController.class);
+
     @Autowired
     FacultyServices facultyServices;
     @Autowired
@@ -33,11 +37,15 @@ public class ImportController {
 
     @PostMapping(value = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<UserDTO> importUsers(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         return userServices.importUsers(file.getInputStream());
     }
 
     @PostMapping(value = "/journals", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<JournalIdAndTitleDTO> importJournals(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         return journalServices.importJournals(file.getInputStream());
     }
 
@@ -48,26 +56,36 @@ public class ImportController {
 
     @PostMapping(value = "/papers", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<PaperDTO> importPapers(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         return paperServices.importPapers(file.getInputStream());
     }
 
     @PostMapping(value = "/authors", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<AuthorDTO> importAuthors(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         return authorServices.importAuthors(file.getInputStream());
     }
 
     @PostMapping(value = "/faculties", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<FacultyDTO> importFaculties(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         return facultyServices.importFaculties(file.getInputStream());
     }
 
     @PostMapping(value = "/departments", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Collection<DepartmentDTO> importDepartments(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         return departmentServices.importDepartments(file.getInputStream());
     }
 
     @PostMapping(value = "/all", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String importAll(@RequestPart MultipartFile file) throws IOException {
+        if (!ExcelUtil.hasExcelFormat(file))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid xlsx file\n");
         facultyServices.importFaculties(file.getInputStream());
         departmentServices.importDepartments(file.getInputStream());
         userServices.importUsers(file.getInputStream());

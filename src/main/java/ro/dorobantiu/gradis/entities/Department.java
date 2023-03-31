@@ -21,7 +21,6 @@ public class Department implements Serializable {
     @ManyToOne
     private Faculty faculty;
 
-    //   @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, fetch= FetchType.EAGER)
     @OneToMany(mappedBy = "department")
     private Collection<Author> authors = new ArrayList<>();
 

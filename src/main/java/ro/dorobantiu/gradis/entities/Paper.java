@@ -99,15 +99,4 @@ public class Paper implements Serializable {
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "Paper{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", journal=" + journal +
-                ", authors=" + authors +
-                ", proofs=" + proofs +
-                '}';
-    }
-
 }

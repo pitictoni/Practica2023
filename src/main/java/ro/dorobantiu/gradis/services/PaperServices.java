@@ -52,8 +52,8 @@ public class PaperServices {
         return "No valid title found";
     }
 
-        private Collection<Author> getAuthorsFromHtml(String html) {
-        Collection <Author> authors = new ArrayList<>();
+    private Collection<Author> getAuthorsFromHtml(String html) {
+        Collection<Author> authors = new ArrayList<>();
         Collection<String> authorNames = new ArrayList<>();
 
         Document doc = Jsoup.parse(html);
@@ -61,11 +61,11 @@ public class PaperServices {
 
         for (Element element : metaTags) {
             if (element.attr("name").equals("dc.creator")) {
-                authorNames.add( element.attr("content"));
+                authorNames.add(element.attr("content"));
             }
         }
 
-        for(String authorName:authorNames){
+        for (String authorName : authorNames) {
             //authors.add(authorRepository.getAuthorByName(authorName));
             log.info(authorName);
             authors.add(authorRepository.findOneByName("FLOREA ADRIAN"));
@@ -73,19 +73,20 @@ public class PaperServices {
 
         return authors;
     }
+
     public PaperDTO importPaperFromURL(String url) {
         Paper paper = new Paper();
         String html = htmlUtils.htmlFromURL(url);
         paper.setTitle(getTitleFromHtml(html));
         paper.setAuthors(getAuthorsFromHtml(html));
-       // log.info(paper.toString());
+        // log.info(paper.toString());
         paperRepository.save(paper);
         return new PaperDTO(paper.getId(), paper.getTitle(), paper.getRawAuthorList());
     }
 
     public Collection<PaperDTO> importPapers(InputStream excelStream) {
         Collection<Paper> papers = getPapers(excelStream);
-       // paperRepository.saveAll(papers);
+        // paperRepository.saveAll(papers);
         return papers.stream().map(x -> mapper.toDTO(x)).toList();
     }
 
@@ -100,7 +101,7 @@ public class PaperServices {
             int numberOfRows = 0;
             int maxNumberOfRows = 1000000;
             int rowsToSkip = 9;
-            for(int i=1;i<=rowsToSkip;i++)
+            for (int i = 1; i <= rowsToSkip; i++)
                 rows.next(); // skip instructions and header
             while (rows.hasNext() && numberOfRows < maxNumberOfRows) {
 
@@ -109,7 +110,7 @@ public class PaperServices {
                 String rawAuthorList = excelUtil.getCellData(currentRow, 1);
                 String rawJournalTitle = excelUtil.getCellData(currentRow, 3);
                 if (title.equals("")) break;
-                papers.add(new Paper(title,rawAuthorList,rawJournalTitle));
+                papers.add(new Paper(title, rawAuthorList, rawJournalTitle));
             }
 
             return papers;

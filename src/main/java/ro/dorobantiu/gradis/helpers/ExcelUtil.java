@@ -1,6 +1,8 @@
 package ro.dorobantiu.gradis.helpers;
 
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,73 +14,28 @@ import java.util.Map;
 @Service
 public class ExcelUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
+
     public static String SHEET = "Foaie1";
     public static String JournalSHEET = "AIS.2021.cuartile.valori";
     public static String PaperSHEET = "I.1";
-    //    @Autowired
-//    FacultyServices facultyServices;
-//    @Autowired
-//    DepartmentServices departmentServices;
+
     public static String EXCELTYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     public static Map<String, Integer> HEADER = new HashMap<>();
-
 
     public ExcelUtil() {
         setMetaInformation();
     }
 
-    private void setMetaInformation() {
-        // set HEADER
-
-    }
-
-
     public static boolean hasExcelFormat(MultipartFile file) {
         return EXCELTYPE.equals(file.getContentType());
     }
 
-    public String test() {
-        String filePath = "";
-        StringBuilder sb = new StringBuilder();
-        int worksheetIndex = 0;
-        try (FileInputStream inputStream = new FileInputStream(filePath)) {
-            Workbook workbook = WorkbookFactory.create(inputStream);
-            Sheet sheet = workbook.getSheetAt(worksheetIndex);
-            for (Row row : sheet) {
-                for (int cellIndex = 0; cellIndex < 10; cellIndex++) {
-                    Cell cell = row.getCell(cellIndex);
-                    if (cell != null) {
-                        sb.append("\n");
-                        sb.append(cell.getStringCellValue());
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return sb.toString();
+    private void setMetaInformation() {
+        // set HEADER
     }
 
-//    public List<Author> importAuthors(InputStream excelStream){
-//        int worksheetIndex=0;
-//        List <Author> authorList = new ArrayList<Author>();
-//
-//        try (FileInputStream inputStream = new FileInputStream(filePath)) {
-//            Workbook workbook = WorkbookFactory.create(inputStream);
-//            Sheet sheet = workbook.getSheetAt(worksheetIndex);
-//            for (Row row : sheet) {
-//                Author author = new Author();
-//                author.setName(row.getCell(1).getStringCellValue());
-//
-//              authorList.add(author);
-//            }
-//            return  authorList;
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    public String getCellData(Row row, String columnName) {
+    public static String getCellData(Row row, String columnName) {
         try {
             Cell cell = row.getCell(columnNumberFromName(columnName));
             String CellData = null;
@@ -96,9 +53,11 @@ public class ExcelUtil {
             }
             return CellData;
         } catch (Exception e) {
+            log.error(e.getStackTrace().toString());
             return "";
         }
     }
+
     public String getCellData(Row row, int columnNumber) {
         try {
             Cell cell = row.getCell(columnNumber);
@@ -117,12 +76,13 @@ public class ExcelUtil {
             }
             return CellData;
         } catch (Exception e) {
+            log.error(e.getStackTrace().toString());
             return "";
         }
     }
 
 
-    private int columnNumberFromName(String columnName) {
+    private static int columnNumberFromName(String columnName) {
         // TODO use COLUMNS map
         return switch (columnName) {
             case "mail" -> 0;

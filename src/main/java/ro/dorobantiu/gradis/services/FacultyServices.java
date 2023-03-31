@@ -1,5 +1,6 @@
 package ro.dorobantiu.gradis.services;
 
+import com.moandjiezana.toml.Toml;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,11 +21,9 @@ import java.util.Iterator;
 @Service
 public class FacultyServices {
 
+    Toml toml = new Toml().read(Excel);
     @Autowired
     FacultyRepository facultyRepository;
-    @Autowired
-    ExcelUtil excelUtil;
-
     @Autowired
     Mapper mapper;
 
@@ -37,7 +36,8 @@ public class FacultyServices {
     public Collection<Faculty> getFaculties(InputStream excelStream) { // TODO add unique param??
         try {
             Workbook workbook = new XSSFWorkbook(excelStream);
-            Sheet sheet = workbook.getSheet(excelUtil.SHEET);
+
+            Sheet sheet = workbook.getSheet();
             Iterator<Row> rows = sheet.iterator();
 
             HashSet<Faculty> faculties = new HashSet<>();
@@ -45,7 +45,7 @@ public class FacultyServices {
             rows.next(); // skip header
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
-                String facultyName = excelUtil.getCellData(currentRow, "DenumireFacultate");
+                String facultyName = ExcelUtil.getCellData(currentRow, "DenumireFacultate");
 
                 Faculty faculty = new Faculty();
                 faculty.setName(facultyName);

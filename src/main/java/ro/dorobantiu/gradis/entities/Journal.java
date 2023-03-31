@@ -1,12 +1,10 @@
 package ro.dorobantiu.gradis.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "JOURNALS")
@@ -26,12 +24,13 @@ public class Journal implements Serializable {
     private String indexing;
 
     @Column
-    private String WoSCathegory;
+    private String woSCathegory;
 
     @Column
     private String quartil;
-    //    @ManyToOne
-    //    private JournalRank journalRank;
+
+    @ManyToOne
+    private JournalRank journalRank;
     @Column(nullable = true)
 //    @Pattern(regexp = "[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9xX]%",
 //            message = "xxxx-xxxx")
@@ -54,13 +53,12 @@ public class Journal implements Serializable {
         this.title = title;
         this.impactFactor = impactFactor;
         this.indexing = indexing;
-        WoSCathegory = woSCathegory;
+        this.woSCathegory = woSCathegory;
         this.quartil = quartil;
         this.ISSN = ISSN;
         this.eISSN = eISSN;
     }
 
-    //<editor-fold desc="Setter/Getters">
     public String getISSN() {
         return ISSN;
     }
@@ -86,11 +84,11 @@ public class Journal implements Serializable {
     }
 
     public String getWoSCathegory() {
-        return WoSCathegory;
+        return woSCathegory;
     }
 
     public void setWoSCathegory(String woSCathegory) {
-        WoSCathegory = woSCathegory;
+        this.woSCathegory = woSCathegory;
     }
 
     public String getQuartil() {
