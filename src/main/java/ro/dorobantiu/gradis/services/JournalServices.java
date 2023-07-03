@@ -75,10 +75,13 @@ public class JournalServices {
         Map<String, Journal> journalMap = new HashMap<>();
 
         for (Journal journal : journals) {
-            if (!journalMap.containsKey(journal.getTitle()) || journalMap.get(journal.getTitle()).getQuartil().compareTo(journal.getQuartil()) < 0)
+            if (!journalMap.containsKey(journal.getTitle()) ||
+                    journalMap.get(journal.getTitle()).getQuartil().compareTo(journal.getQuartil()) < 0)
                 journalMap.put(journal.getTitle(), journal);
         }
 
         return journalMap.values();
+
+
     }
 }

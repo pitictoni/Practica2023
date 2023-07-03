@@ -21,7 +21,7 @@ import java.util.Iterator;
 @Service
 public class FacultyServices {
 
-    Toml toml = new Toml().read(Excel);
+ //   Toml toml = new Toml().read(Excel);
     @Autowired
     FacultyRepository facultyRepository;
     @Autowired
@@ -37,7 +37,8 @@ public class FacultyServices {
         try {
             Workbook workbook = new XSSFWorkbook(excelStream);
 
-            Sheet sheet = workbook.getSheet();
+            String facultySheet = "Foaie1";
+            Sheet sheet = workbook.getSheet(facultySheet);
             Iterator<Row> rows = sheet.iterator();
 
             HashSet<Faculty> faculties = new HashSet<>();
